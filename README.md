@@ -274,22 +274,54 @@ Se comprueba que el sistema lanza un error cuando se introducen valores negativo
 <details>
 <summary><b>Pruebas de Cálculo de la Métrica NEWS2</b></summary>
 
-Para validar el funcionamiento del sistema de puntuación NEWS2 se han definido diferentes escenarios clínicos:
+Para validar el funcionamiento del sistema de puntuación NEWS2 se han definido los siguientes escenarios clínicos representativos:
 
-* **Paciente con constantes normales:**  
-Se introducen valores normales de constantes vitales (respiración, saturación de oxígeno, presión arterial, pulso, temperatura y estado de conciencia).  
-El resultado esperado es una puntuación NEWS2 igual a 0.
+* **Caso 1 – Paciente con constantes normales (riesgo bajo):**  
+  - Frecuencia respiratoria: 16 rpm  
+  - Saturación de oxígeno: 97 %  
+  - Oxígeno suplementario: No  
+  - Presión arterial sistólica: 120 mmHg  
+  - Frecuencia cardíaca: 75 bpm  
+  - Temperatura: 36.8 °C  
+  - Nivel de conciencia: Alerta  
 
-* **Paciente con alteraciones moderadas:**  
-Se prueban valores ligeramente fuera del rango normal (por ejemplo frecuencia respiratoria elevada o temperatura moderadamente alta).  
-El sistema debe devolver una puntuación intermedia.
+  **Resultado esperado:** NEWS2 = 0 (riesgo bajo).
 
-* **Paciente crítico:**  
-Se introducen valores extremos en varias constantes vitales (por ejemplo saturación baja, presión sistólica baja y frecuencia cardíaca elevada).  
-El resultado esperado es una puntuación NEWS2 alta que indique riesgo clínico.
+---
 
-* **Protección ante datos imposibles:**  
-El sistema debe rechazar valores fisiológicamente imposibles como saturaciones negativas o temperaturas extremadamente altas.
+* **Caso 2 – Paciente con alteraciones moderadas (riesgo medio):**  
+  - Frecuencia respiratoria: 22 rpm  
+  - Saturación de oxígeno: 94 %  
+  - Oxígeno suplementario: No  
+  - Presión arterial sistólica: 100 mmHg  
+  - Frecuencia cardíaca: 105 bpm  
+  - Temperatura: 38.2 °C  
+  - Nivel de conciencia: Alerta  
+
+  **Resultado esperado:** NEWS2 entre 3 y 5 puntos (riesgo clínico moderado).
+
+---
+
+* **Caso 3 – Paciente con deterioro clínico grave (riesgo alto):**  
+  - Frecuencia respiratoria: 30 rpm  
+  - Saturación de oxígeno: 88 %  
+  - Oxígeno suplementario: Sí  
+  - Presión arterial sistólica: 85 mmHg  
+  - Frecuencia cardíaca: 130 bpm  
+  - Temperatura: 39.5 °C  
+  - Nivel de conciencia: Confusión  
+
+  **Resultado esperado:** NEWS2 ≥ 7 puntos (riesgo alto, requiere intervención urgente).
+
+---
+
+* **Caso 4 – Validación de datos fisiológicamente imposibles:**  
+  El sistema debe detectar valores fuera de los límites biológicos razonables, por ejemplo:
+  - Saturación de oxígeno negativa
+  - Temperatura corporal mayor de 45 °C
+  - Frecuencia respiratoria igual a 0
+
+  **Resultado esperado:** el sistema debe lanzar una excepción o error de validación.
 
 </details>
 

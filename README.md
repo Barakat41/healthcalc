@@ -222,6 +222,15 @@ Estas métricas requieren datos de signos vitales o resultados de laboratorio.
       7. Temperatura.
     * **Lógica de Software:** El sistema suma puntos (0 a 3) por cada parámetro que se desvíe de lo normal. Un puntaje de 5 o más es una "Alerta Roja" que requiere respuesta urgente.
 
+    **Sistema de Puntuación por Parámetro:**
+    1. **Frecuencia respiratoria (rpm):** 0 puntos (12-20), 1 punto (9-11), 2 puntos (21-24) y 3 puntos (menor a 9 o mayor a 24).
+    2. **Saturación de oxígeno (%):** 0 puntos (96 o más), 1 punto (94-95), 2 puntos (92-93) y 3 puntos (menos de 92).
+    3. **Oxígeno suplementario:** 0 puntos si no tiene, 2 puntos si tiene.
+    4. **Presión arterial sistólica (mmHg):** 0 puntos (111-219), 1 punto (101-110), 2 puntos (91-100) y 3 puntos (menor a 91 o mayor a 219).
+    5. **Frecuencia cardíaca (lpm):** 0 puntos (51-90), 1 punto (41-50 o 91-110), 2 puntos (111-130) y 3 puntos (menor a 41 o mayor a 130).
+    6. **Nivel de conciencia (Escala ACVPU):** 0 puntos (alerta) o 3 puntos si presenta alteración (CVPU).
+    7. **Temperatura (ºC):** 0 puntos (36.1-38.0), 1 punto (35.1-36.0 o 38.1-39.0), 2 puntos (más de 39.1) y 3 puntos (35.0 o menos).
+
 </details>
 
 
@@ -249,6 +258,48 @@ Para cada categoría, probamos valores que están justo en el límite para asegu
 * **Sobrepeso (Overweight):** Se comprueba con valores desde 25 hasta justo antes de 30.
 * **Obesidad (Obesity):** Se comprueba con valores desde 30 en adelante.
 * **Seguridad:** Se rechazan clasificaciones para resultados de IMC negativos o absurdamente altos (más de 150).
+
+</details>
+
+<details>
+<summary><b>Pruebas de Cálculo del Peso Corporal Ideal (IBW)</b></summary>
+
+Para comprobar que el cálculo del peso corporal ideal funciona correctamente, se han definido varios casos de prueba basados en la fórmula de Lorentz:
+
+* **Cálculo correcto para hombres:**  
+Se verifica que, al introducir una altura válida en centímetros para un paciente masculino, el sistema devuelva el valor esperado según la fórmula.
+
+* **Cálculo correcto para mujeres:**  
+Se comprueba que el sistema aplique correctamente la versión de la fórmula correspondiente a pacientes femeninos y que el resultado obtenido sea el adecuado.
+
+* **Protección ante datos imposibles:**  
+El sistema debe rechazar estaturas fuera de los límites biológicamente razonables, es decir, menores de 30 cm o mayores de 300 cm.
+
+* **Validación de datos de entrada:**  
+También se comprueba que el sistema gestione correctamente valores de género no válidos o no reconocidos, lanzando una excepción o error adecuado.
+
+</details>
+
+<details>
+<summary><b>Pruebas de Cálculo de la Métrica NEWS2</b></summary>
+
+Para validar el funcionamiento del sistema de puntuación NEWS2 se han definido distintos escenarios clínicos:
+
+* **Paciente con constantes normales (Score 0):**  
+Se introducen valores normales de constantes vitales (frecuencia respiratoria, saturación de oxígeno, presión arterial, pulso, temperatura y estado de conciencia).  
+El resultado esperado es una puntuación total de 0.
+
+* **Paciente con alteraciones leves:**  
+Se prueban valores ligeramente fuera del rango normal para comprobar que el sistema asigna correctamente puntuaciones intermedias (1 o 2 puntos) según el parámetro afectado.
+
+* **Paciente con valores críticos:**  
+Se introducen valores extremos en diferentes constantes vitales para comprobar que el sistema asigna las puntuaciones máximas (hasta 3 puntos por parámetro) y que el cálculo total del NEWS2 es correcto.
+
+* **Control de valores inválidos:**  
+El sistema debe rechazar valores fisiológicamente imposibles, como saturaciones de oxígeno negativas o superiores al 100%, o temperaturas extremadamente altas.
+
+* **Validación del estado de conciencia:**  
+También se comprueba que el sistema detecte valores no válidos en la escala de conciencia (ACVPU) y genere el error correspondiente.
 
 </details>
 
